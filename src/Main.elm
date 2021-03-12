@@ -59,10 +59,12 @@ typeclassCell d tc =
 dataRow : DataType -> Html Msg
 dataRow d =
     tr [] <|
-        td
+        [ td
             []
             [ text d.name ]
-            :: List.map (typeclassCell d) allTypeclasses
+        , td [] [ text <| String.join "." d.package ]
+        ]
+            ++ List.map (typeclassCell d) allTypeclasses
 
 
 typeclassHeader : Typeclass -> Html Msg
@@ -73,7 +75,7 @@ typeclassHeader tc =
 dataTable : List DataType -> Html Msg
 dataTable ds =
     table [] <|
-        thead [] (th [] [ text "Name" ] :: List.map typeclassHeader allTypeclasses)
+        thead [] ([ th [] [ text "Name" ], th [] [ text "Package" ] ] ++ List.map typeclassHeader allTypeclasses)
             :: List.map dataRow ds
 
 

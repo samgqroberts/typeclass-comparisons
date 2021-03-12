@@ -15,6 +15,7 @@ typeclassString tc =
 
 type alias DataType =
     { name : String
+    , package : List String
     , instances : List Typeclass
     }
 
@@ -119,43 +120,63 @@ preludeDataTypes =
 
 dMaybe : DataType
 dMaybe =
-    DataType "Maybe" [ tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
+    DataType
+        "Maybe"
+        [ "GHC", "Maybe" ]
+        [ tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
 
 
 dOrdering : DataType
 dOrdering =
-    DataType "Ordering" [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
+    DataType
+        "Ordering"
+        [ "GHC", "Types" ]
+        [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
 
 
 dEither : DataType
 dEither =
-    DataType "Either" [ tcApplicative, tcEq, tcFunctor, tcMonad, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable ]
+    DataType
+        "Either"
+        [ "Data", "Either" ]
+        [ tcApplicative, tcEq, tcFunctor, tcMonad, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable ]
 
 
 dList : DataType
 dList =
-    DataType "List" [ tcApplicative, tcEq, tcFunctor, tcMonad, tcMonoid, tcOrd, tcSemigroup, tcShow, tcMonadFail, tcRead, tcFoldable, tcTraversable ]
+    DataType
+        "List"
+        [ "GHC", "Types" ]
+        [ tcApplicative, tcEq, tcFunctor, tcMonad, tcMonoid, tcOrd, tcSemigroup, tcShow, tcMonadFail, tcRead, tcFoldable, tcTraversable ]
 
 
 dIO : DataType
 dIO =
-    DataType "IO" [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup, tcMonadFail ]
+    DataType
+        "IO"
+        [ "GHC", "Types" ]
+        [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup, tcMonadFail ]
 
 
 dFn : DataType
 dFn =
-    DataType "->" [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup ]
+    DataType
+        "->"
+        [ "GHC", "Prim" ]
+        [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup ]
 
 
 dTuple : DataType
 dTuple =
-    DataType "Tuple" [ tcMonoid, tcEq, tcFunctor, tcMonad, tcApplicative, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable, tcBounded ]
+    DataType
+        "Tuple"
+        [ "GHC", "Tuple" ]
+        [ tcMonoid, tcEq, tcFunctor, tcMonad, tcApplicative, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable, tcBounded ]
 
 
 dUnit : DataType
 dUnit =
-    DataType "Unit" [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
-
-
-
-----
+    DataType
+        "Unit"
+        [ "GHC.Tuple" ]
+        [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
