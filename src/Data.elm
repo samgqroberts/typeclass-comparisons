@@ -1,72 +1,16 @@
 module Data exposing (..)
 
+---- DATA MODEL ----
 
-type Typeclass
-    = Eq
-    | Ord
-    | Show
-    | Read
-    | MonadFail
-    | Foldable
-    | Traversable
-    | Semigroup
-    | Monoid
-    | Functor
-    | Applicative
-    | Monad
-    | Bounded
-    | Enum
+
+type alias Typeclass =
+    { name : String
+    }
 
 
 typeclassString : Typeclass -> String
 typeclassString tc =
-    case tc of
-        Eq ->
-            "Eq"
-
-        Ord ->
-            "Ord"
-
-        Show ->
-            "Show"
-
-        Read ->
-            "Read"
-
-        MonadFail ->
-            "MonadFail"
-
-        Foldable ->
-            "Foldable"
-
-        Traversable ->
-            "Traversable"
-
-        Semigroup ->
-            "Semigroup"
-
-        Monoid ->
-            "Monoid"
-
-        Functor ->
-            "Functor"
-
-        Applicative ->
-            "Applicative"
-
-        Monad ->
-            "Monad"
-
-        Enum ->
-            "Enum"
-
-        Bounded ->
-            "Bounded"
-
-
-allTypeclasses : List Typeclass
-allTypeclasses =
-    [ Bounded, Enum, Eq, Ord, Show, Read, MonadFail, Foldable, Traversable, Semigroup, Monoid, Functor, Applicative, Monad ]
+    tc.name
 
 
 type alias DataType =
@@ -75,46 +19,143 @@ type alias DataType =
     }
 
 
+
+---- DATA INPUT (manual, for now) ----
+
+
+allTypeclasses : List Typeclass
+allTypeclasses =
+    List.concat [ preludeTypeclasses ]
+
+
+allDataTypes : List DataType
+allDataTypes =
+    List.concat [ preludeDataTypes ]
+
+
+
+---- GHC PRELUDE ----
+
+
+preludeTypeclasses : List Typeclass
+preludeTypeclasses =
+    [ tcBounded, tcEnum, tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
+
+
+tcEq : Typeclass
+tcEq =
+    Typeclass "Eq"
+
+
+tcOrd : Typeclass
+tcOrd =
+    Typeclass "Ord"
+
+
+tcShow : Typeclass
+tcShow =
+    Typeclass "Show"
+
+
+tcRead : Typeclass
+tcRead =
+    Typeclass "Read"
+
+
+tcMonadFail : Typeclass
+tcMonadFail =
+    Typeclass "MonadFail"
+
+
+tcFoldable : Typeclass
+tcFoldable =
+    Typeclass "Foldable"
+
+
+tcTraversable : Typeclass
+tcTraversable =
+    Typeclass "Traversable"
+
+
+tcSemigroup : Typeclass
+tcSemigroup =
+    Typeclass "Semigroup"
+
+
+tcMonoid : Typeclass
+tcMonoid =
+    Typeclass "Monoid"
+
+
+tcFunctor : Typeclass
+tcFunctor =
+    Typeclass "Functor"
+
+
+tcApplicative : Typeclass
+tcApplicative =
+    Typeclass "Applicative"
+
+
+tcMonad : Typeclass
+tcMonad =
+    Typeclass "Monad"
+
+
+tcBounded : Typeclass
+tcBounded =
+    Typeclass "Bounded"
+
+
+tcEnum : Typeclass
+tcEnum =
+    Typeclass "Enum"
+
+
+preludeDataTypes : List DataType
+preludeDataTypes =
+    [ dMaybe, dOrdering, dEither, dList, dIO, dFn, dTuple, dUnit ]
+
+
 dMaybe : DataType
 dMaybe =
-    DataType "Maybe" [ Eq, Ord, Show, Read, MonadFail, Foldable, Traversable, Semigroup, Monoid, Functor, Applicative, Monad ]
+    DataType "Maybe" [ tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
 
 
 dOrdering : DataType
 dOrdering =
-    DataType "Ordering" [ Eq, Monoid, Ord, Semigroup, Enum, Show, Read, Bounded ]
+    DataType "Ordering" [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
 
 
 dEither : DataType
 dEither =
-    DataType "Either" [ Applicative, Eq, Functor, Monad, Ord, Semigroup, Show, Read, Foldable, Traversable ]
+    DataType "Either" [ tcApplicative, tcEq, tcFunctor, tcMonad, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable ]
 
 
 dList : DataType
 dList =
-    DataType "List" [ Applicative, Eq, Functor, Monad, Monoid, Ord, Semigroup, Show, MonadFail, Read, Foldable, Traversable ]
+    DataType "List" [ tcApplicative, tcEq, tcFunctor, tcMonad, tcMonoid, tcOrd, tcSemigroup, tcShow, tcMonadFail, tcRead, tcFoldable, tcTraversable ]
 
 
 dIO : DataType
 dIO =
-    DataType "IO" [ Applicative, Functor, Monad, Monoid, Semigroup, MonadFail ]
+    DataType "IO" [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup, tcMonadFail ]
 
 
 dFn : DataType
 dFn =
-    DataType "->" [ Applicative, Functor, Monad, Monoid, Semigroup ]
+    DataType "->" [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup ]
 
 
 dTuple : DataType
 dTuple =
-    DataType "Tuple" [ Monoid, Eq, Functor, Monad, Applicative, Ord, Semigroup, Show, Read, Foldable, Traversable, Bounded ]
+    DataType "Tuple" [ tcMonoid, tcEq, tcFunctor, tcMonad, tcApplicative, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable, tcBounded ]
 
 
 dUnit : DataType
 dUnit =
-    DataType "Unit" [ Eq, Monoid, Ord, Semigroup, Enum, Show, Read, Bounded ]
+    DataType "Unit" [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
 
 
-data : List DataType
-data =
-    [ dMaybe, dOrdering, dEither, dList, dIO, dFn, dTuple, dUnit ]
+
+----

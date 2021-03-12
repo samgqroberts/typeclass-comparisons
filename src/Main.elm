@@ -75,7 +75,7 @@ dataTable ds =
 view : Model -> Html Msg
 view model =
     div []
-        [ dataTable data
+        [ dataTable allDataTypes
         ]
 
 
