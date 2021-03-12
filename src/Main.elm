@@ -49,7 +49,7 @@ stringFromBool x =
 typeclassCell : DataType -> Typeclass -> Html Msg
 typeclassCell d tc =
     td [] <|
-        if List.member tc d.instances then
+        if Data.hasInstance allInstances tc.name d.name then
             [ checkIcon ]
 
         else

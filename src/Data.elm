@@ -21,8 +21,18 @@ typeclassString tc =
 type alias DataType =
     { name : String
     , package : Package
-    , instances : List Typeclass
     }
+
+
+type alias Instance =
+    { typeclassName : String
+    , dataTypeName : String
+    }
+
+
+hasInstance : List Instance -> String -> String -> Bool
+hasInstance instances tcName dtName =
+    List.any (\x -> x.typeclassName == tcName && x.dataTypeName == dtName) instances
 
 
 
@@ -37,6 +47,11 @@ allTypeclasses =
 allDataTypes : List DataType
 allDataTypes =
     List.concat [ preludeDataTypes ]
+
+
+allInstances : List Instance
+allInstances =
+    List.concat [ preludeInstances ]
 
 
 
@@ -128,7 +143,11 @@ dMaybe =
     DataType
         "Maybe"
         [ "GHC", "Maybe" ]
-        [ tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
+
+
+dMaybeInstances : List Instance
+dMaybeInstances =
+    List.map (\tc -> Instance tc.name dMaybe.name) [ tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
 
 
 dOrdering : DataType
@@ -136,7 +155,11 @@ dOrdering =
     DataType
         "Ordering"
         [ "GHC", "Types" ]
-        [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
+
+
+dOrderingInstances : List Instance
+dOrderingInstances =
+    List.map (\tc -> Instance tc.name dOrdering.name) [ tcEq, tcOrd, tcShow, tcRead, tcMonadFail, tcFoldable, tcTraversable, tcSemigroup, tcMonoid, tcFunctor, tcApplicative, tcMonad ]
 
 
 dEither : DataType
@@ -144,6 +167,11 @@ dEither =
     DataType
         "Either"
         [ "Data", "Either" ]
+
+
+dEitherInstances : List Instance
+dEitherInstances =
+    List.map (\tc -> Instance tc.name dEither.name)
         [ tcApplicative, tcEq, tcFunctor, tcMonad, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable ]
 
 
@@ -152,6 +180,11 @@ dList =
     DataType
         "List"
         [ "GHC", "Types" ]
+
+
+dListInstances : List Instance
+dListInstances =
+    List.map (\tc -> Instance tc.name dList.name)
         [ tcApplicative, tcEq, tcFunctor, tcMonad, tcMonoid, tcOrd, tcSemigroup, tcShow, tcMonadFail, tcRead, tcFoldable, tcTraversable ]
 
 
@@ -160,6 +193,11 @@ dIO =
     DataType
         "IO"
         [ "GHC", "Types" ]
+
+
+dIOInstances : List Instance
+dIOInstances =
+    List.map (\tc -> Instance tc.name dIO.name)
         [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup, tcMonadFail ]
 
 
@@ -168,6 +206,11 @@ dFn =
     DataType
         "->"
         [ "GHC", "Prim" ]
+
+
+dFnInstances : List Instance
+dFnInstances =
+    List.map (\tc -> Instance tc.name dFn.name)
         [ tcApplicative, tcFunctor, tcMonad, tcMonoid, tcSemigroup ]
 
 
@@ -176,6 +219,11 @@ dTuple =
     DataType
         "Tuple"
         [ "GHC", "Tuple" ]
+
+
+dTupleInstances : List Instance
+dTupleInstances =
+    List.map (\tc -> Instance tc.name dTuple.name)
         [ tcMonoid, tcEq, tcFunctor, tcMonad, tcApplicative, tcOrd, tcSemigroup, tcShow, tcRead, tcFoldable, tcTraversable, tcBounded ]
 
 
@@ -184,4 +232,13 @@ dUnit =
     DataType
         "Unit"
         [ "GHC.Tuple" ]
+
+
+dUnitInstances : List Instance
+dUnitInstances =
+    List.map (\tc -> Instance tc.name dUnit.name)
         [ tcEq, tcMonoid, tcOrd, tcSemigroup, tcEnum, tcShow, tcRead, tcBounded ]
+
+
+preludeInstances =
+    List.concat [ dMaybeInstances, dOrderingInstances, dEitherInstances, dListInstances, dIOInstances, dFnInstances, dTupleInstances, dUnitInstances ]
