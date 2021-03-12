@@ -3,8 +3,13 @@ module Data exposing (..)
 ---- DATA MODEL ----
 
 
+type alias Package =
+    List String
+
+
 type alias Typeclass =
     { name : String
+    , package : Package
     }
 
 
@@ -15,7 +20,7 @@ typeclassString tc =
 
 type alias DataType =
     { name : String
-    , package : List String
+    , package : Package
     , instances : List Typeclass
     }
 
@@ -45,72 +50,72 @@ preludeTypeclasses =
 
 tcEq : Typeclass
 tcEq =
-    Typeclass "Eq"
+    Typeclass "Eq" [ "GHC", "Classes" ]
 
 
 tcOrd : Typeclass
 tcOrd =
-    Typeclass "Ord"
+    Typeclass "Ord" [ "GHC", "Classes" ]
 
 
 tcShow : Typeclass
 tcShow =
-    Typeclass "Show"
+    Typeclass "Show" [ "GHC", "Show" ]
 
 
 tcRead : Typeclass
 tcRead =
-    Typeclass "Read"
+    Typeclass "Read" [ "GHC", "Read" ]
 
 
 tcMonadFail : Typeclass
 tcMonadFail =
-    Typeclass "MonadFail"
+    Typeclass "MonadFail" [ "Control.Monad.Fail" ]
 
 
 tcFoldable : Typeclass
 tcFoldable =
-    Typeclass "Foldable"
+    Typeclass "Foldable" [ "Data", "Foldable" ]
 
 
 tcTraversable : Typeclass
 tcTraversable =
-    Typeclass "Traversable"
+    Typeclass "Traversable" [ "Data", "Traversable" ]
 
 
 tcSemigroup : Typeclass
 tcSemigroup =
-    Typeclass "Semigroup"
+    Typeclass "Semigroup" [ "GHC", "Base" ]
 
 
 tcMonoid : Typeclass
 tcMonoid =
-    Typeclass "Monoid"
+    Typeclass "Monoid" [ "GHC", "Base" ]
 
 
 tcFunctor : Typeclass
 tcFunctor =
-    Typeclass "Functor"
+    Typeclass "Functor" [ "GHC", "Base" ]
 
 
 tcApplicative : Typeclass
 tcApplicative =
-    Typeclass "Applicative"
+    Typeclass "Applicative" [ "GHC", "Base" ]
 
 
 tcMonad : Typeclass
 tcMonad =
-    Typeclass "Monad"
+    Typeclass "Monad" [ "GHC", "Base" ]
 
 
 tcBounded : Typeclass
 tcBounded =
-    Typeclass "Bounded"
+    Typeclass "Bounded" [ "GHC", "Enum" ]
 
 
 tcEnum : Typeclass
 tcEnum =
-    Typeclass "Enum"
+    Typeclass "Enum" [ "GHC", "Enum" ]
 
 
 preludeDataTypes : List DataType
