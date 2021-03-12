@@ -24,6 +24,11 @@ type alias DataType =
     }
 
 
+dataTypeString : DataType -> String
+dataTypeString dt =
+    dt.name
+
+
 type alias Instance =
     { typeclassName : String
     , dataTypeName : String

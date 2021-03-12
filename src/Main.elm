@@ -2,7 +2,7 @@ module Main exposing (..)
 
 import Browser
 import Data exposing (..)
-import Html exposing (Html, div, h1, img, span, table, td, text, th, thead, tr)
+import Html exposing (Html, br, div, h1, img, span, table, td, text, th, thead, tr)
 import Html.Attributes exposing (class, src)
 
 
@@ -99,10 +99,41 @@ checkIcon =
     materialIcon Check
 
 
+typeclassCell : List Instance -> Typeclass -> DataType -> Html Msg
+typeclassCell insts tc dt =
+    dataTypeCell insts dt tc
+
+
+typeclassRow : List DataType -> List Instance -> Typeclass -> Html Msg
+typeclassRow dts insts tc =
+    tr [] <|
+        [ td
+            []
+            [ text tc.name ]
+        , td [] [ text <| String.join "." tc.package ]
+        ]
+            ++ List.map (typeclassCell insts tc) dts
+
+
+dataTypeHeader : DataType -> Html Msg
+dataTypeHeader dt =
+    th [] [ text <| typeclassString dt ]
+
+
+typeclassTable : List Typeclass -> List Instance -> List DataType -> Html Msg
+typeclassTable tcs insts dts =
+    table [] <|
+        thead [] ([ th [] [ text "Name" ], th [] [ text "Package" ] ] ++ List.map dataTypeHeader dts)
+            :: List.map (typeclassRow dts insts) tcs
+
+
 view : Model -> Html Msg
 view model =
     div []
-        [ dataTypeTable allTypeclasses allInstances allDataTypes
+        [ br [] []
+        , dataTypeTable allTypeclasses allInstances allDataTypes
+        , br [] []
+        , typeclassTable allTypeclasses allInstances allDataTypes
         ]
 
 
