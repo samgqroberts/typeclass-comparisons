@@ -46,25 +46,25 @@ stringFromBool x =
         "False"
 
 
-typeclassCell : DataType -> Typeclass -> Html Msg
-typeclassCell d tc =
+dataTypeCell : List Instance -> DataType -> Typeclass -> Html Msg
+dataTypeCell insts dt tc =
     td [] <|
-        if Data.hasInstance allInstances tc.name d.name then
+        if Data.hasInstance insts tc.name dt.name then
             [ checkIcon ]
 
         else
             []
 
 
-dataRow : DataType -> Html Msg
-dataRow d =
+dataTypeRow : List Typeclass -> List Instance -> DataType -> Html Msg
+dataTypeRow tcs insts dt =
     tr [] <|
         [ td
             []
-            [ text d.name ]
-        , td [] [ text <| String.join "." d.package ]
+            [ text dt.name ]
+        , td [] [ text <| String.join "." dt.package ]
         ]
-            ++ List.map (typeclassCell d) allTypeclasses
+            ++ List.map (dataTypeCell insts dt) tcs
 
 
 typeclassHeader : Typeclass -> Html Msg
@@ -72,11 +72,11 @@ typeclassHeader tc =
     th [] [ text <| typeclassString tc ]
 
 
-dataTable : List DataType -> Html Msg
-dataTable ds =
+dataTypeTable : List Typeclass -> List Instance -> List DataType -> Html Msg
+dataTypeTable tcs insts dts =
     table [] <|
-        thead [] ([ th [] [ text "Name" ], th [] [ text "Package" ] ] ++ List.map typeclassHeader allTypeclasses)
-            :: List.map dataRow ds
+        thead [] ([ th [] [ text "Name" ], th [] [ text "Package" ] ] ++ List.map typeclassHeader tcs)
+            :: List.map (dataTypeRow tcs insts) dts
 
 
 type MaterialIconName
@@ -102,7 +102,7 @@ checkIcon =
 view : Model -> Html Msg
 view model =
     div []
-        [ dataTable allDataTypes
+        [ dataTypeTable allTypeclasses allInstances allDataTypes
         ]
 
 
