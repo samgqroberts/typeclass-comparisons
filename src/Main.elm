@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Browser
 import Data exposing (..)
-import Html exposing (Html, div, h1, img, table, td, text, th, thead, tr)
-import Html.Attributes exposing (src)
+import Html exposing (Html, div, h1, img, span, table, td, text, th, thead, tr)
+import Html.Attributes exposing (class, src)
 
 
 
@@ -48,7 +48,12 @@ stringFromBool x =
 
 typeclassCell : DataType -> Typeclass -> Html Msg
 typeclassCell d tc =
-    td [] [ text (stringFromBool <| List.member tc d.instances) ]
+    td [] <|
+        if List.member tc d.instances then
+            [ checkIcon ]
+
+        else
+            []
 
 
 dataRow : DataType -> Html Msg
@@ -70,6 +75,26 @@ dataTable ds =
     table [] <|
         thead [] (th [] [ text "Name" ] :: List.map typeclassHeader allTypeclasses)
             :: List.map dataRow ds
+
+
+type MaterialIconName
+    = Check
+
+
+materialIcon : MaterialIconName -> Html Msg
+materialIcon name =
+    let
+        nameString =
+            case name of
+                Check ->
+                    "check"
+    in
+    span [ class "material-icons" ] [ text nameString ]
+
+
+checkIcon : Html Msg
+checkIcon =
+    materialIcon Check
 
 
 view : Model -> Html Msg
